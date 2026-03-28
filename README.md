@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Music Mood Classifier
 
 A machine learning pipeline that classifies Spotify tracks into broad musical
@@ -225,3 +226,6 @@ music-mood-classifier/
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on branch naming, commit
 message style, and code standards.
+=======
+# AI-based-Music-Mood-Recommendation-
+>>>>>>> 3774d1d4665269e68689915c5468899ab55226bc
