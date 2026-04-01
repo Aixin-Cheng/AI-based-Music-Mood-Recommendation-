@@ -7,11 +7,11 @@ training set. Results are sorted by mean weighted F1 score.
 
 | Model | Mean CV Accuracy | Mean Weighted F1 | Training Time (s) |
 |-------|-----------------|------------------|-------------------|
-| LightGBM | 0.6133 | 0.5983 | 15.5 |
-| Random Forest | 0.5994 | 0.5754 | 9.6 |
-| MLP | 0.5775 | 0.5569 | 4.5 |
-| Logistic Regression | 0.5647 | 0.5358 | 1.2 |
-| SVM | 0.5594 | 0.5209 | 5.5 |
+| LightGBM | 0.6133 | 0.5983 | 11.3 |
+| Random Forest | 0.5994 | 0.5754 | 6.5 |
+| MLP | 0.5775 | 0.5569 | 2.4 |
+| Logistic Regression | 0.5648 | 0.5359 | 0.8 |
+| SVM | 0.5594 | 0.5209 | 4.5 |
 | KNN | 0.5419 | 0.5199 | 1.9 |
 
 ## Selected Model: LightGBM
@@ -30,7 +30,7 @@ training set. Results are sorted by mean weighted F1 score.
 
 - **Random Forest** (F1=0.5754): Lower weighted F1 than the selected model.
 - **MLP** (F1=0.5569): Lower weighted F1 than the selected model.
-- **Logistic Regression** (F1=0.5358): Lower weighted F1 than the selected model.
+- **Logistic Regression** (F1=0.5359): Lower weighted F1 than the selected model.
 - **SVM** (F1=0.5209): Lower weighted F1 than the selected model.
 - **KNN** (F1=0.5199): Lower weighted F1 than the selected model.
 

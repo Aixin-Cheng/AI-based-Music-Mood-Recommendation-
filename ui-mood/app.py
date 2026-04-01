@@ -10,6 +10,7 @@ Run with:
 
 # ==== Standard Library Imports ====
 import pickle
+import random
 import sys
 import urllib.parse
 from pathlib import Path
@@ -74,6 +75,80 @@ PLAYLISTS: dict[str, list[dict]] = {
         {"name": "Lofi Hip-Hop",       "desc": "Lo-fi beats and laid-back flows",          "query": "lofi hip hop chill beats playlist"},
         {"name": "R&B Mood",           "desc": "Smooth soul for late evenings",            "query": "rnb soul mood playlist"},
         {"name": "Lyrical Bars",       "desc": "Wordsmiths and storytellers at their best","query": "lyrical rap storytelling playlist"},
+    ],
+}
+SONGS: dict[str, list[dict]] = {
+    "acoustic": [
+        {"title": "The Night Will Always Win", "artist": "Manchester Orchestra"},
+        {"title": "Holocene",                  "artist": "Bon Iver"},
+        {"title": "Skinny Love",               "artist": "Birdy"},
+        {"title": "Fast Car",                  "artist": "Tracy Chapman"},
+        {"title": "The Joke",                  "artist": "Brandi Carlile"},
+        {"title": "Lua",                       "artist": "Bright Eyes"},
+        {"title": "Re: Stacks",                "artist": "Bon Iver"},
+        {"title": "Naked as We Came",          "artist": "Iron & Wine"},
+        {"title": "Fade Into You",             "artist": "Mazzy Star"},
+        {"title": "Death With Dignity",        "artist": "Sufjan Stevens"},
+    ],
+    "alternative": [
+        {"title": "Everlong",                  "artist": "Foo Fighters"},
+        {"title": "Black",                     "artist": "Pearl Jam"},
+        {"title": "The Less I Know the Better","artist": "Tame Impala"},
+        {"title": "Do I Wanna Know?",          "artist": "Arctic Monkeys"},
+        {"title": "Mr. Brightside",            "artist": "The Killers"},
+        {"title": "Creep",                     "artist": "Radiohead"},
+        {"title": "Semi-Charmed Life",         "artist": "Third Eye Blind"},
+        {"title": "Chop Suey!",                "artist": "System of a Down"},
+        {"title": "Float On",                  "artist": "Modest Mouse"},
+        {"title": "Take Me Out",               "artist": "Franz Ferdinand"},
+    ],
+    "dance": [
+        {"title": "As It Was",                 "artist": "Harry Styles"},
+        {"title": "Levitating",                "artist": "Dua Lipa"},
+        {"title": "Blinding Lights",           "artist": "The Weeknd"},
+        {"title": "STAY",                      "artist": "The Kid LAROI & Justin Bieber"},
+        {"title": "Good 4 U",                  "artist": "Olivia Rodrigo"},
+        {"title": "Anti-Hero",                 "artist": "Taylor Swift"},
+        {"title": "Flowers",                   "artist": "Miley Cyrus"},
+        {"title": "Espresso",                  "artist": "Sabrina Carpenter"},
+        {"title": "Cruel Summer",              "artist": "Taylor Swift"},
+        {"title": "vampire",                   "artist": "Olivia Rodrigo"},
+    ],
+    "electronic": [
+        {"title": "Strobe",                    "artist": "deadmau5"},
+        {"title": "Midnight City",             "artist": "M83"},
+        {"title": "One More Time",             "artist": "Daft Punk"},
+        {"title": "Titanium",                  "artist": "David Guetta ft. Sia"},
+        {"title": "Levels",                    "artist": "Avicii"},
+        {"title": "Lean On",                   "artist": "Major Lazer & DJ Snake"},
+        {"title": "Clarity",                   "artist": "Zedd ft. Foxes"},
+        {"title": "Stay the Night",            "artist": "Zedd ft. Hayley Williams"},
+        {"title": "Animals",                   "artist": "Martin Garrix"},
+        {"title": "Sun & Moon",                "artist": "Above & Beyond"},
+    ],
+    "heavy": [
+        {"title": "Master of Puppets",         "artist": "Metallica"},
+        {"title": "Bohemian Rhapsody",         "artist": "Queen"},
+        {"title": "Killing in the Name",       "artist": "Rage Against the Machine"},
+        {"title": "Welcome to the Black Parade","artist": "My Chemical Romance"},
+        {"title": "Chop Suey!",                "artist": "System of a Down"},
+        {"title": "Given Up",                  "artist": "Linkin Park"},
+        {"title": "Bulls on Parade",           "artist": "Rage Against the Machine"},
+        {"title": "B.Y.O.B.",                  "artist": "System of a Down"},
+        {"title": "Sober",                     "artist": "Tool"},
+        {"title": "Down with the Sickness",    "artist": "Disturbed"},
+    ],
+    "vocal": [
+        {"title": "HUMBLE.",                   "artist": "Kendrick Lamar"},
+        {"title": "God's Plan",                "artist": "Drake"},
+        {"title": "Montero (Call Me By Your Name)", "artist": "Lil Nas X"},
+        {"title": "Industry Baby",             "artist": "Lil Nas X ft. Jack Harlow"},
+        {"title": "Essence",                   "artist": "Wizkid ft. Tems"},
+        {"title": "Love Again",                "artist": "Dua Lipa"},
+        {"title": "All the Stars",             "artist": "Kendrick Lamar & SZA"},
+        {"title": "Location",                  "artist": "Khalid"},
+        {"title": "No Role Modelz",            "artist": "J. Cole"},
+        {"title": "Superstar",                 "artist": "Lauryn Hill"},
     ],
 }
 
@@ -451,7 +526,50 @@ def _playlists_html(genre: str) -> str:
         for pl in PLAYLISTS[genre]
     )
     return f'<div class="pl-heading">{emoji} Playlists for you</div>{cards}'
+def _playlists_html(genre: str) -> str:
+    """Return HTML for playlist and song recommendation cards for a given genre.
 
+    Args:
+        genre: The genre to render playlists for.
+
+    Returns:
+        HTML string containing playlists and 5 random song picks.
+    """
+    emoji, color, _ = GENRE_STYLE[genre]
+
+    # ── Playlists ──
+    playlist_cards = "".join(
+        f"""<div class="pl-card">
+              <div class="pl-info">
+                <h4>{pl['name']}</h4>
+                <p>{pl['desc']}</p>
+              </div>
+              <a href="https://open.spotify.com/search/{urllib.parse.quote(pl['query'])}"
+                 target="_blank" class="pl-btn">&#9654; Listen</a>
+            </div>"""
+        for pl in PLAYLISTS[genre]
+    )
+
+    # ── 5 random song picks ──
+    picks = random.sample(SONGS[genre], k=min(5, len(SONGS[genre])))
+    song_cards = "".join(
+        f"""<div class="pl-card">
+              <div class="pl-info">
+                <h4>🎵 {song['title']}</h4>
+                <p>{song['artist']}</p>
+              </div>
+              <a href="https://open.spotify.com/search/{urllib.parse.quote(song['title'] + ' ' + song['artist'])}"
+                 target="_blank" class="pl-btn">&#9654; Play</a>
+            </div>"""
+        for song in picks
+    )
+
+    return f"""
+        <div class="pl-heading">{emoji} Playlists for you</div>
+        {playlist_cards}
+        <div class="pl-heading">🎲 Songs you might like</div>
+        {song_cards}
+    """
 
 # ==== Tab Renderers ====
 
